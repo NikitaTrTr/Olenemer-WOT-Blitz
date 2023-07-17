@@ -1,86 +1,71 @@
 from PyQt6 import QtWidgets, QtGui
 from PyQt6 import QtCore
-
-class player_stats_ui():
-    def __init__(self, win_rate, tank_win_rate, damage, frame_winrates, frame_tank, frame_tank_stats, window):
-        font = QtGui.QFont()
-        font.setPointSize(10)
-
-        self.win_rate_field = QtWidgets.QTextEdit(window)
-        self.add_wr(win_rate, frame_winrates, font)
-
-        self.tank_field = QtWidgets.QTextEdit(window)
-        self.add_tank(frame_tank, font)
-
-        self.tank_stats_field = QtWidgets.QTextEdit(window)
-        self.add_tank_stats(tank_win_rate,damage,frame_tank_stats,font)
+from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QTextEdit
 
 
-    def add_wr(self, win_rate, frame_winrates, font):
-        pal = QtGui.QPalette()
-        pal.setColor(QtGui.QPalette.ColorRole.Text, QtGui.QColor.fromRgb(0xff, 0xff, 0xff, alpha=255))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.win_rate_field.sizePolicy().hasHeightForWidth())
-        self.win_rate_field.setSizePolicy(sizePolicy)
-        self.win_rate_field.setMaximumSize(QtCore.QSize(40, 24))
-        self.win_rate_field.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
-        self.win_rate_field.setStyleSheet("background-color: transparent")
-        self.win_rate_field.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.win_rate_field.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.win_rate_field.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.NoTextInteraction)
-        self.win_rate_field.setPalette(pal)
-        self.win_rate_field.setFont(font)
-        self.win_rate_field.setHtml(win_rate)
-        frame_winrates.insertWidget(frame_winrates.count(), self.win_rate_field)
-
-    def add_tank(self, frame_tank, font):
-        pal = QtGui.QPalette()
-        pal.setColor(QtGui.QPalette.ColorRole.Text, QtGui.QColor.fromRgb(0xff, 0xff, 0xff, alpha=255))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.tank_field.sizePolicy().hasHeightForWidth())
-        self.tank_field.setSizePolicy(sizePolicy)
-        self.tank_field.setMaximumSize(QtCore.QSize(40, 24))
-        self.tank_field.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
-        self.tank_field.setStyleSheet("background-color: transparent")
-        self.tank_field.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.tank_field.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.tank_field.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.NoTextInteraction)
-        self.tank_field.setAlignment(QtCore.Qt.AlignmentFlag.AlignRight)
-        self.tank_field.setPalette(pal)
-        self.tank_field.setFont(font)
-        self.tank_field.setHtml("tank:")
-        frame_tank.insertWidget(frame_tank.count(), self.tank_field)
-
-    def add_tank_stats(self, tank_win_rate, damage, frame_tank_stats, font):
-        pal = QtGui.QPalette()
-        pal.setColor(QtGui.QPalette.ColorRole.Text, QtGui.QColor.fromRgb(0xff, 0xff, 0xff, alpha=255))
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum, QtWidgets.QSizePolicy.Policy.Maximum)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.tank_stats_field.sizePolicy().hasHeightForWidth())
-        self.tank_stats_field.setSizePolicy(sizePolicy)
-        self.tank_stats_field.setMaximumSize(QtCore.QSize(75, 24))
-        self.tank_stats_field.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
-        self.tank_stats_field.setStyleSheet("background-color: transparent")
-        self.tank_stats_field.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.tank_stats_field.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.tank_stats_field.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.NoTextInteraction)
-        self.tank_stats_field.setPalette(pal)
-        self.tank_stats_field.setFont(font)
-        self.tank_stats_field.setHtml(tank_win_rate+" | "+damage)
-        frame_tank_stats.insertWidget(frame_tank_stats.count(), self.tank_stats_field)
-
-class player_stats():
-    def __init__(self, id, win_rate, tank_win_rate, tank_damage):
-        self.id = id
+class PlayerStats:
+    def __init__(self, player_nickname: str, win_rate: float, tank_win_rate: float, tank_damage: int):
+        self.player_nickname = player_nickname
         self.win_rate = win_rate
         self.tank_win_rate = tank_win_rate
         self.tank_damage = tank_damage
 
 
+class PlayerStatsUi:
+    def __init__(self, window: QWidget, team_panel: QVBoxLayout):
+        player_line = QHBoxLayout(window)
+        player_line.setSpacing(0)
 
+        pal = QtGui.QPalette()
+        pal.setColor(QtGui.QPalette.ColorRole.Text, QtGui.QColor.fromRgb(0xff, 0xff, 0xff, alpha=255))
 
+        nickname_field = self.configure_field(QTextEdit())
+        player_wr_field = self.configure_field(QTextEdit())
+        tank_label = self.configure_field(QTextEdit())
+        tank_wr_damage = self.configure_field(QTextEdit())
+        nickname_field.setPalette(pal)
+        tank_label.setPalette(pal)
+        tank_wr_damage.setPalette(pal)
+        player_wr_field.setPalette(pal)
+
+        nickname_field.setMaximumSize(QtCore.QSize(100, 24))
+        player_wr_field.setMaximumSize(QtCore.QSize(47, 24))
+        tank_label.setMaximumSize(QtCore.QSize(38, 24))
+        tank_wr_damage.setMaximumSize(QtCore.QSize(100, 24))
+
+        self.nickname_field = nickname_field
+        self.player_wr_field = player_wr_field
+        self.tank_label = tank_label
+        self.tank_wr_damage = tank_wr_damage
+
+        player_line.addWidget(nickname_field)
+        player_line.addWidget(player_wr_field)
+        player_line.addWidget(tank_label)
+        player_line.addWidget(tank_wr_damage)
+
+        team_panel.addLayout(player_line)
+
+    @staticmethod
+    def configure_field(field: QTextEdit):
+        field.setSizePolicy(QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Policy.Maximum,
+                                                  QtWidgets.QSizePolicy.Policy.Maximum))
+        field.setFrameShape(QtWidgets.QFrame.Shape.NoFrame)
+        field.setStyleSheet("background-color: transparent")
+        field.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        field.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        field.setTextInteractionFlags(QtCore.Qt.TextInteractionFlag.NoTextInteraction)
+        return field
+
+    def set_stats(self, player_stats: PlayerStats):
+        nick = player_stats.player_nickname
+        wr = str(player_stats.win_rate)[0:4] + '%'
+        tank_wr = str(player_stats.tank_win_rate)[0:4]
+        damage = str(player_stats.tank_damage)
+        self.nickname_field.setHtml(self.format_field(nick))
+        self.player_wr_field.setHtml(self.format_field(wr))
+        self.tank_wr_damage.setHtml(self.format_field(f'{tank_wr}% l {damage}'))
+        self.tank_label.setHtml(self.format_field('tank: '))
+
+    @staticmethod
+    def format_field(data: str):
+        return f'<span style="font-family: Arial narrow; font-size: 16px;">{data}</span>'
