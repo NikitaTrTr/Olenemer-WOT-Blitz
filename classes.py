@@ -69,3 +69,15 @@ class PlayerStatsUi:
     @staticmethod
     def format_field(data: str):
         return f'<span style="font-family: Arial narrow; font-size: 16px;">{data}</span>'
+
+
+class Point:
+    def __init__(self, x: int, y: int):
+        self.x = x
+        self.y = y
+
+
+class Rect:
+    def __init__(self, pt1, pt2):
+        self.pt1 = pt1
+        self.pt2 = pt2
