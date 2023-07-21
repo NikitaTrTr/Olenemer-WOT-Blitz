@@ -29,11 +29,6 @@ class ScreenCutter:
                 enemies_team[i]['tank_id'][j] = enemies_team[i]['tank_id'][j][::-1]
         return {'allies': allies_team, 'enemies': enemies_team}
 
-    def load_image(filename):
-        img = cv.imread(filename)
-        img_gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
-        return img_gray
-
     def get_image_by_coordinates(self, image, position: Rect):
         cropped_image = image[position.pt1.y:position.pt2.y, position.pt1.x:position.pt2.x]
         return cropped_image

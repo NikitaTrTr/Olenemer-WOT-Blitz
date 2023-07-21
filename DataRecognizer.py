@@ -4,7 +4,7 @@ from decoding_dictionary import decoding_dictionary
 
 
 class ScannedPlayer:
-    def __init__(self, nickname: str, tank_id: int):
+    def __init__(self, nickname: str, tank_id: str):
         self.nickname = nickname
         self.tank_id = tank_id
     def __str__(self):
@@ -15,7 +15,7 @@ class ScannedPlayer:
 class DataRecognizer:
 
     @staticmethod
-    def return_scanned_data(players):
+    def get_scanned_data(players):
         scanned_allies = []
         scanned_enemies = []
         for player in players['allies']:
@@ -34,12 +34,12 @@ class DataRecognizer:
     @staticmethod
     def scan_nickname(nick_image):
         nick_image_gray = cv.cvtColor(nick_image, cv.COLOR_BGR2GRAY)
-        nick_image_gray_resized = cv.resize(nick_image_gray, None, fx=2.3, fy=2.2, interpolation=cv.INTER_LINEAR)
+        nick_image_gray_resized = cv.resize(nick_image_gray, None, fx=2.0, fy=2.0, interpolation=cv.INTER_LINEAR)
         nick_image_binary = cv.threshold(nick_image_gray_resized, 240, 255, cv.THRESH_BINARY_INV + cv.THRESH_OTSU)[1]
         nickname_string = image_to_string(nick_image_binary, config="-c tessedit_char_whitelist=0123456789")[0:-1]
 
         #print(nickname_string)
-        #cv.imshow('1', cv.resize(nick_image_binary, None, fx=0.33, fy=0.33, interpolation=cv.INTER_LINEAR))
+        #cv.imshow('1', cv.resize(nick_image_binary, None, fx=0.345, fy=0.345, interpolation=cv.INTER_LINEAR))
         #cv.waitKey()
 
         nickname_decoded = DataRecognizer.decode(nickname_string)
@@ -48,7 +48,7 @@ class DataRecognizer:
     @staticmethod
     def scan_tank_id(image):
         tank_id_gray = cv.cvtColor(image, cv.COLOR_BGR2GRAY)
-        tank_id_gray_resized = cv.resize(tank_id_gray, None, fx=1.8, fy=1.8, interpolation=cv.INTER_LINEAR)
+        tank_id_gray_resized = cv.resize(tank_id_gray, None, fx=1.5, fy=1.5, interpolation=cv.INTER_LINEAR)
         tank_id_binary = cv.threshold(tank_id_gray_resized, 240, 255, cv.THRESH_BINARY_INV + cv.THRESH_OTSU)[1]
         tank_id_string = image_to_string(tank_id_binary, config="-c tessedit_char_whitelist=0123456789")[0:-1]
 

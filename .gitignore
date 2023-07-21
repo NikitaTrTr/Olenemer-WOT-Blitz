@@ -54,7 +54,7 @@ cmake-build-*/
 *.iws
 
 # IntelliJ
-out/
+screenshots/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
@@ -115,7 +115,6 @@ fabric.properties
 .idea/**/azureSettings.xml
 
 # End of https://www.toptal.com/developers/gitignore/api/pycharm
-/source/in/
 /tester/screens/
 /icon_modifier/original_icons/
 /icon_modifier/icons_with_ids/
@@ -124,3 +123,4 @@ fabric.properties
 /forms/
 
 /configs/token
+/screenshots/

@@ -5,7 +5,7 @@ from PyQt6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QTextEdit
 
 class PlayerStats:
     def __init__(self, player_nickname: str, win_rate: float, tank_win_rate: float, tank_damage: int):
-        self.player_nickname = player_nickname
+        self.nickname = player_nickname
         self.win_rate = win_rate
         self.tank_win_rate = tank_win_rate
         self.tank_damage = tank_damage
@@ -57,7 +57,7 @@ class PlayerStatsUi:
         return field
 
     def set_stats(self, player_stats: PlayerStats):
-        nick = player_stats.player_nickname
+        nick = player_stats.nickname
         wr = str(player_stats.win_rate)[0:4] + '%'
         tank_wr = str(player_stats.tank_win_rate)[0:4]
         damage = str(player_stats.tank_damage)
